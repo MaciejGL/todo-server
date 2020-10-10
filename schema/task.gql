@@ -1,0 +1,40 @@
+type Mutation {
+  createTask(taskInput: TaskInputData): Task!
+  createUser(userInput: UserInputData): User!
+}
+type Query {
+  getTasks: [Task!]!
+  hello: String
+}
+
+input UserInputData {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input TaskInputData {
+  title: String!
+  subtitle: String
+  description: String
+}
+
+type Task {
+  _id: ID!
+  title: String!
+  subtitle: String
+  description: String
+  accomplished: Boolean!
+  createdAt: String
+  updatedAt: String
+}
+
+type User {
+  _id: ID!
+  name: String!
+  email: String!
+  password: String!
+  tasks: [Task!]!
+  createdAt: String
+  updatedAt: String
+}
