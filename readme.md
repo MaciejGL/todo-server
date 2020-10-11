@@ -37,6 +37,10 @@ To run server
 
 `npm start`
 
+### GraphQL Relations
+![Relations](/relations.png)
+
+
 ## TO_DO
 ---
 | Name          | Priority | Description | Info |
