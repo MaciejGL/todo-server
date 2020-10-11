@@ -7,13 +7,23 @@ const { importSchema } = require('graphql-import')
 const schema = buildSchema(importSchema('./schema/task.gql'))
 const resolvers = require('./resolvers/task')
 
+const isAuth = require('./middleware/is-auth')
+
 const app = express();
+
+app.use(isAuth)
 
 app.use('/graphql',
   graphqlHTTP( {
     schema: schema,
     rootValue: resolvers,
     graphiql: true,
+    customFormatErrorFn: (error) => ({
+      message: error.message || "An error occurred.",
+      code: error.originalError.code || 500,
+      data: error.originalError.data,
+      you: "suck",
+    }),
   })
 );
 

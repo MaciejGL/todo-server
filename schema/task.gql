@@ -4,7 +4,7 @@ type Mutation {
 }
 type Query {
   getTasks: [Task!]!
-  hello: String
+  login(email: String!, password: String!): AuthData!
 }
 
 input UserInputData {
@@ -17,6 +17,12 @@ input TaskInputData {
   title: String!
   subtitle: String
   description: String
+}
+
+type AuthData {
+  userId: ID!
+  token: String!
+  tokenExpiration: Int!
 }
 
 type Task {
@@ -33,7 +39,6 @@ type User {
   _id: ID!
   name: String!
   email: String!
-  password: String!
   tasks: [Task!]!
   createdAt: String
   updatedAt: String

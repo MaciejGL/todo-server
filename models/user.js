@@ -14,10 +14,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  tasks: {
+  tasks: [{
     type: Schema.Types.ObjectId,
-    ref: 'task',
-  },
-});
+    ref: 'Task',
+  }],
+}, {timestamps: true});
 
 module.exports = mongoose.model('User', userSchema);

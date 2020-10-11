@@ -7,24 +7,29 @@ models:
 user,
 todo
 
-
 GRAPHQL
 schema:
 type for task
 type for user
 
 query {
-    get all for user,
-    get one for user,
+get one for user,
 }
 
 mutation {
+delete user
 
-    create user,
-    delete user
-
-    create task,
     update task,
     delete task
 
 }
+
+validation {
+create email and password joi/validator
+}
+
+async cleaning with try catch
+
+rozdzielic pliki wg funkcjonalnosci
+
+teams and related tasks
