@@ -36,3 +36,16 @@ exports.getTasks = async (args, req) => {
         throw error
     }
 }
+
+exports.getTask = async ({id}, req) => {
+    try {
+        const user = await User.findById(req.userId)
+        const taskId = user.tasks.find(task => task._id.toString() === id.toString());
+        const task = await Task.findOne({_id: taskId})
+        console.log({user, task});
+        return task
+    } catch (error) {
+        throw error
+    }
+
+}

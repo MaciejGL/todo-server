@@ -1,9 +1,18 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const validator = require('validator');
 
 const User = require('../models/user')
 
 exports.createUser = async ({userInput}) => {
+    const isValidEmail = validator.isEmail(userInput.email);
+    const isValidName = validator.isLength(userInput.name, { min: 3})
+    const isValidPassword = validator.isLength(userInput.password, { min: 8})
+    if (!isValidEmail || !isValidName || !isValidPassword) {
+        const err = new Error('Invalid credentials.')
+        err.code = 422
+        throw err
+    }
     try {
         const userExists = await User.findOne({email: userInput.email})
         if (userExists) {
@@ -26,6 +35,11 @@ exports.createUser = async ({userInput}) => {
 }
 
 exports.login = async ({email, password}) => {
+    if (!validator.isEmail(email)) {
+        const err = new Error('Invalid credentials.')
+        err.code = 422
+        throw err
+    }
     try {
         const user = await User.findOne({email});
         if (!user) {
