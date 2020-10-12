@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const { buildSchema } = require('graphql')
 const { importSchema } = require('graphql-import')
 
-const schema = buildSchema(importSchema('./schema/task.gql'))
-const resolvers = require('./resolvers/task')
+const schema = buildSchema(importSchema('./schema/schemas.gql'))
+const resolvers = require('./resolvers/index')
 
 const isAuth = require('./middleware/is-auth')
 

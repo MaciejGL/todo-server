@@ -18,7 +18,8 @@
     "graphql": "^15.3.0",
     "graphql-import": "^1.0.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.9"
+    "mongoose": "^5.10.9",
+    "validator": "^13.1.17"
   },
   "devDependencies": {
     "morgan": "^1.10.0",
