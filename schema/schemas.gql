@@ -1,5 +1,6 @@
 type Mutation {
 	createTask(taskInput: TaskInputData!): Task!
+	updateTask(id: ID!, taskInput: TaskInputData): Task
 	deleteTask(id: ID!): Task!
 	createUser(userInput: UserInputData!): User!
 }
@@ -19,6 +20,7 @@ input TaskInputData {
 	title: String!
 	subtitle: String
 	description: String
+	accomplished: Boolean
 }
 
 type AuthData {

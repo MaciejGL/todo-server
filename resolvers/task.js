@@ -47,6 +47,21 @@ exports.getTask = async ({id}, req) => {
     }
 }
 
+exports.updateTask = async ({id, taskInput}, req) => {
+    isAuth(req.isAuth)
+    try {
+        const task = await Task.findByIdAndUpdate(id, taskInput, {new: true})
+        console.log({taskInput, task});
+        // const newTask = {
+        //     ...task,
+        //     accomplished: taskInput.accomplished || task.accomplished
+        // }
+        return task
+    } catch (error) {
+        throw error
+    }
+}
+ 
 exports.deleteTask = async ({id}, req) => {
     isAuth(req.isAuth)
     try {
