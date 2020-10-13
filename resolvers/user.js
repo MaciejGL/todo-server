@@ -41,7 +41,7 @@ exports.login = async ({email, password}) => {
             throw err
         }
     
-        validatePassword(password, user.password)
+        await validatePassword(password, user.password)
     
         const token = jwt.sign({userId: user._id, email}, 'glupitext', {expiresIn: '1h'});
     
@@ -59,8 +59,7 @@ exports.updateUser = async ({userInput}, req) => {
     isAuth(req.isAuth)
     try {
         const user = await User.findById(req.userId)
-        validatePassword(userInput.password, user.password)
-console.log({user});
+        await validatePassword(userInput.password, user.password)
         if (userInput.newPassword && validator.isLength(userInput.newPassword, {min: 8})) {
             const hashedPassword = await bcrypt.hash(userInput.newPassword, 12);
 
@@ -76,7 +75,6 @@ console.log({user});
             name: userInput.name ? userInput.name : user.name,
             email: userInput.email ? userInput.email : user.email
         }, {new: true})
-        console.log({updatedUser});
         return updatedUser
         
     } catch (error) {
@@ -88,7 +86,7 @@ exports.deleteUser = async ({password},req) => {
     isAuth(req.isAuth)
     try {
         const user = await User.findById(req.userId)
-        validatePassword(password, user.password)
+        await validatePassword(password, user.password)
         const deletedUser = await user.deleteOne()
         return deletedUser
     } catch (error) {
