@@ -3,6 +3,7 @@ type Mutation {
 	updateTask(id: ID!, taskInput: TaskInputData!): Task!
 	deleteTask(id: ID!): Task!
 	createUser(userInput: UserInputData!): User!
+	updateUser(userInput: UserUpdateInput!): User!
 	deleteUser(password: String!): User!
 }
 type Query {
@@ -15,6 +16,13 @@ input UserInputData {
 	name: String!
 	email: String!
 	password: String!
+}
+
+input UserUpdateInput {
+	name: String
+	email: String
+	password: String!
+	newPassword: String
 }
 
 input TaskInputData {

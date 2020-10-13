@@ -5,6 +5,8 @@ const User = require('../models/user')
 
 const {validateCreateUser, validateLogin } = require('../utils/validate-auth')
 const {isAuth} = require('../utils/is-auth')
+const { validatePassword } = require('../utils/validate-password');
+const { default: validator } = require('validator');
 
 exports.createUser = async ({userInput}) => {
     validateCreateUser(userInput)
@@ -39,12 +41,7 @@ exports.login = async ({email, password}) => {
             throw err
         }
     
-        const isEqual = await bcrypt.compare(password, user.password)
-        if (!isEqual) {
-            const err = new Error('Incorrect password.')
-            err.code = 401;
-            throw err
-        }
+        validatePassword(password, user.password)
     
         const token = jwt.sign({userId: user._id, email}, 'glupitext', {expiresIn: '1h'});
     
@@ -58,16 +55,40 @@ exports.login = async ({email, password}) => {
     }
 }
 
+exports.updateUser = async ({userInput}, req) => {
+    isAuth(req.isAuth)
+    try {
+        const user = await User.findById(req.userId)
+        validatePassword(userInput.password, user.password)
+console.log({user});
+        if (userInput.newPassword && validator.isLength(userInput.newPassword, {min: 8})) {
+            const hashedPassword = await bcrypt.hash(userInput.newPassword, 12);
+
+            const updatedUserAndPassword = await User.findByIdAndUpdate(req.userId ,{
+                name: userInput.name ? userInput.name : user.name,
+                email: userInput.email ? userInput.email : user.email,
+                password: hashedPassword
+            }, {new: true})
+            return updatedUserAndPassword;
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(req.userId, {
+            name: userInput.name ? userInput.name : user.name,
+            email: userInput.email ? userInput.email : user.email
+        }, {new: true})
+        console.log({updatedUser});
+        return updatedUser
+        
+    } catch (error) {
+        throw error
+    }
+}
+
 exports.deleteUser = async ({password},req) => {
     isAuth(req.isAuth)
     try {
         const user = await User.findById(req.userId)
-        const isEqual = await bcrypt.compare(password, user.password)
-        if (!isEqual) {
-            const err = new Error('Incorrect password.')
-            err.code = 401;
-            throw err
-        }
+        validatePassword(password, user.password)
         const deletedUser = await user.deleteOne()
         return deletedUser
     } catch (error) {
