@@ -1,14 +1,11 @@
 const Task = require('../models/task')
 const User = require('../models/user')
 
+const { isAuth } = require('../utils/is-auth')
 
 
 exports.createTask = async ({taskInput}, req) => {
-    if (!req.isAuth) {
-        const err = new Error('You are not authorized.')
-        err.code = 401;
-        throw err
-    }
+    isAuth(req.isAuth)
     try {
         const task = new Task({
             title: taskInput.title,
@@ -28,11 +25,7 @@ exports.createTask = async ({taskInput}, req) => {
 }
 
 exports.getTasks = async (args, req) => {
-    if (!req.isAuth) {
-        const err = new Error('You are not authorized.')
-        err.code = 401;
-        throw err
-    }
+        isAuth(req.isAuth)
     try {
         const user = await User.findById(req.userId);
         const popualtedUserData = await user.execPopulate({path: 'tasks'});
@@ -43,11 +36,7 @@ exports.getTasks = async (args, req) => {
 }
 
 exports.getTask = async ({id}, req) => {
-    if (!req.isAuth) {
-        const err = new Error('You are not authorized.')
-        err.code = 401;
-        throw err
-    }
+    isAuth(req.isAuth)
     try {
         const user = await User.findById(req.userId)
         const taskId = user.tasks.find(task => task._id.toString() === id.toString());
@@ -58,12 +47,18 @@ exports.getTask = async ({id}, req) => {
     }
 }
 
-exports.deleteTask = async ({id}, req) => {
-    if (!req.isAuth) {
-        const err = new Error('You are not authorized.')
-        err.code = 401;
-        throw err
+exports.updateTask = async ({id, taskInput}, req) => {
+    isAuth(req.isAuth)
+    try {
+        const task = await Task.findByIdAndUpdate(id, taskInput, {new: true})
+        return task
+    } catch (error) {
+        throw error
     }
+}
+ 
+exports.deleteTask = async ({id}, req) => {
+    isAuth(req.isAuth)
     try {
         const task = await Task.findOneAndDelete({_id: id})
         const user = await User.findById(req.userId)
