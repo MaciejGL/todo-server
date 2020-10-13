@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user')
 
 const {validateCreateUser, validateLogin } = require('../utils/validate-auth')
+const {isAuth} = require('../utils/is-auth')
 
 exports.createUser = async ({userInput}) => {
     validateCreateUser(userInput)
@@ -55,5 +56,21 @@ exports.login = async ({email, password}) => {
     } catch (error) {
         throw error
     }
+}
 
+exports.deleteUser = async ({password},req) => {
+    isAuth(req.isAuth)
+    try {
+        const user = await User.findById(req.userId)
+        const isEqual = await bcrypt.compare(password, user.password)
+        if (!isEqual) {
+            const err = new Error('Incorrect password.')
+            err.code = 401;
+            throw err
+        }
+        const deletedUser = await user.deleteOne()
+        return deletedUser
+    } catch (error) {
+        throw error
+    }
 }
