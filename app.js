@@ -2,16 +2,16 @@ const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const mongoose = require('mongoose');
 const { buildSchema } = require('graphql')
-const { importSchema } = require('graphql-import')
+const { importSchema } = require('graphql-import');
 
-const schema = buildSchema(importSchema('./schema/schemas.gql'))
-const resolvers = require('./resolvers/index')
+const schema = buildSchema(importSchema('./schema/schemas.gql'));
+const resolvers = require('./resolvers/index');
 
-const isAuth = require('./middleware/is-auth')
+const isAuth = require('./middleware/is-auth');
 
 const app = express();
 
-app.use(isAuth)
+app.use(isAuth);
 
 app.use('/graphql',
   graphqlHTTP( {
