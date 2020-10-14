@@ -58,5 +58,3 @@ To run server
 | ---------- | :------: | ----------- |
 | `Mutation` |   run    | delete user |
 | `Mutation` |   run    | update task |
-
-isAuth = util function
