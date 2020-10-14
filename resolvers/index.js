@@ -3,7 +3,7 @@ const userResolvers = require('./user');
 
 const rootResolver = {
     ...taskResolvers,
-    ...userResolvers
-}
+    ...userResolvers,
+};
 
-module.exports = rootResolver
+module.exports = rootResolver;
