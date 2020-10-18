@@ -3,9 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
-const { validateCreateUser, validateLogin } = require('../utils/validate-auth');
-const { isAuth } = require('../utils/is-auth');
-const { validatePassword } = require('../utils/validate-password');
+const { isAuth, validatePassword, validateCreateUser, validateLogin } = require('../utils/auth');
 const { validator } = require('validator');
 
 exports.createUser = async ({ userInput }) => {

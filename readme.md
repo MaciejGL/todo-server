@@ -51,10 +51,3 @@ To run server
 ![Relations](/relations.png)
 
 ## TO_DO
-
----
-
-| Name       | Priority | Description |
-| ---------- | :------: | ----------- |
-| `Mutation` |   run    | delete user |
-| `Mutation` |   run    | update task |

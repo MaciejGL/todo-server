@@ -16,7 +16,7 @@ module.exports = buildSchema(`
 		deleteUser(password: String!): User!
 	}
 	type Query {
-		getTasks: [Task!]!
+		getTasks(page: Int, perPage: Int): TasksData!
 		getTask(id: ID!): Task!
 		login(email: String!, password: String!): AuthData!
 	}

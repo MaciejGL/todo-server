@@ -12,7 +12,13 @@ module.exports = `
 		subtitle: String
 		description: String
 		accomplished: Boolean!
+		creator: User
 		createdAt: String
 		updatedAt: String
+	}
+
+	type TasksData {
+		tasks: [Task!]!
+		totalTasks: Int
 	}
 `;

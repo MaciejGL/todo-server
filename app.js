@@ -19,9 +19,8 @@ app.use(
 		graphiql: true,
 		customFormatErrorFn: (error) => ({
 			message: error.message || 'An error occurred.',
-			code: error.originalError.code || 500,
-			data: error.originalError.data,
-			you: 'suck',
+			code: error.originalError ? error.originalError.code : 500,
+			data: error.originalError ? error.originalError.data : null,
 		}),
 	})
 );
