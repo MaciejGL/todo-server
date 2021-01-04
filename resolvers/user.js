@@ -33,6 +33,8 @@ exports.login = async ({ email, password }) => {
 	validateLogin(email);
 	try {
 		const user = await User.findOne({ email });
+	console.log('here', user);
+
 		if (!user) {
 			const err = new Error('User with this email not found.');
 			err.code = 404;

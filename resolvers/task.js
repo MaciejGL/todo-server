@@ -63,8 +63,19 @@ exports.getTask = async ({ id }, req) => {
 exports.updateTask = async ({ id, taskInput }, req) => {
 	isAuth(req.isAuth);
 	try {
-		const task = await Task.findByIdAndUpdate(id, taskInput, { new: true });
-		return task;
+		// get task, check if logged in user is a creator of the task
+		// const task = await Task.findByIdAndUpdate(id, taskInput, { new: true });
+		const task = await Task.findById(id);
+		if (task.creator.toString() !== req.userId) {
+			const err = new Error('Not authenticated to update the resource');
+			err.code = 401;
+			throw err;
+		}
+		for (let [key, value] of Object.entries(taskInput)) {
+			task[key] = value;
+		}
+		const updatedTask = await task.save();
+		return updatedTask;
 	} catch (error) {
 		throw error;
 	}
@@ -73,6 +84,7 @@ exports.updateTask = async ({ id, taskInput }, req) => {
 exports.deleteTask = async ({ id }, req) => {
 	isAuth(req.isAuth);
 	try {
+		// look for task, check if this the creator then delete
 		const task = await Task.findOneAndDelete({ _id: id });
 		const user = await User.findById(req.userId);
 		const userTasks = user.tasks.filter((task) => task.toString() !== id.toString());
